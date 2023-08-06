@@ -1,0 +1,40 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>TaskHub | Update Profile</title>
+</head>
+
+{% include 'base.html' %}
+
+<br>
+
+<div class="container bg-secondary shadow-md p-5" style="border-radius: 10px; width: 500px;">
+    <h3 class="text-center">Update Profile</h3>
+    <br/>
+    <hr>
+
+    <div class="content-section">
+        <div class="media">
+            <img class="rounded-circle account-img" src="{{ user.profile.profile_picture.url }}" style="display: block; margin: 0 auto;">
+            <br><br>
+			</div>
+           <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Profile info</legend>
+        {{ user_form|crispy }}
+        {{ profile_form|crispy }}
+    </fieldset>
+    <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Save</button>
+    </div>
+</form>
+        </div>
+    </div>
+</html>

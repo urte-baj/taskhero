@@ -1,0 +1,123 @@
+{% load static %}
+
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+    <style>
+        /* Adding custom background color for the current day */
+        #calendar .fc-today {
+            background-color: #B7C5C8;
+        }
+
+    </style>
+</head>
+
+<body>
+{% include 'base.html' %}
+
+<br>
+
+<div class="container bg-secondary shadow-md p-5" style="border-radius: 10px; width: 1000px;">
+    <h1 class="text-center">Task calendar</h1>
+    <br>
+    <hr>
+    <!-- Basic task selection method - displays tasks by selected month -->
+    <!--    <form method="get" autocomplete="off">-->
+    <!--        {% csrf_token %}-->
+    <!--        <label for="month" style="font-size: 15px;">Select Month:   &nbsp;</label>-->
+    <!--        <select name="month" id="month">-->
+    <!--            <option value="">All</option>-->
+    <!--            <option value="1" {% if selected_month == 1 %}selected{% endif %}>January</option>-->
+    <!--            <option value="2" {% if selected_month == 2 %}selected{% endif %}>February</option>-->
+    <!--            <option value="3" {% if selected_month == 3 %}selected{% endif %}>March</option>-->
+    <!--            <option value="4" {% if selected_month == 4 %}selected{% endif %}>April</option>-->
+    <!--            <option value="5" {% if selected_month == 5 %}selected{% endif %}>May</option>-->
+    <!--            <option value="6" {% if selected_month == 6 %}selected{% endif %}>June</option>-->
+    <!--            <option value="7" {% if selected_month == 7 %}selected{% endif %}>July</option>-->
+    <!--            <option value="8" {% if selected_month == 8 %}selected{% endif %}>August</option>-->
+    <!--            <option value="9" {% if selected_month == 9 %}selected{% endif %}>September</option>-->
+    <!--            <option value="10" {% if selected_month == 10 %}selected{% endif %}>October</option>-->
+    <!--            <option value="11" {% if selected_month == 11 %}selected{% endif %}>November</option>-->
+    <!--            <option value="12" {% if selected_month == 12 %}selected{% endif %}>December</option>-->
+    <!--        </select>-->
+    <!--        <br><br>-->
+    <!--        <input type="submit" class="btn btn-primary" value="Filter" />-->
+    <!--    </form>-->
+    <!--    <hr>-->
+
+    <!--    {% if tasks %}-->
+    <!--        <ul>-->
+    <!--            {% for task in tasks %}-->
+    <!--                <li>-->
+    <!--                    <a href="{% url 'task-detail' task.id %}" style="font-size: 18px; text-decoration: none; color: white;">-->
+    <!--                        {{ task.title }} - Assignee: {{ task.assignee }} - Due: {{ task.due_date }}-->
+    <!--                    </a>-->
+    <!--                </li>-->
+    <!--            {% endfor %}-->
+    <!--        </ul>-->
+    <!--    {% else %}-->
+    <!--        {% if selected_month %}-->
+    <!--            <p>No tasks due in {{ selected_month }}/{{ selected_year }}.</p>-->
+    <!--        {% else %}-->
+    <!--            <p>No tasks due this month.</p>-->
+    <!--        {% endif %}-->
+    <!--    {% endif %}-->
+
+    <!-- Calendar mode   -->
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+    <script>
+    $(document).ready(function () {
+        var calendar = $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            events: '/get_tasks/', // Fetch events from this URL
+            selectable: true,
+            selectHelper: true,
+            editable: true,
+            eventLimit: true,
+      <!-- Creating events by clicking on a specific day (disabled)   -->
+<!--            select: function (start, end, allDay) {-->
+<!--                var title = prompt("Enter Event Title");-->
+<!--                if (title) {-->
+<!--                    var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");-->
+<!--                    var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");-->
+<!--                    $.ajax({-->
+<!--                        type: "GET",-->
+<!--                        url: '/add_event',-->
+<!--                        data: {'title': title, 'start': start, 'end': end},-->
+<!--                        dataType: "json",-->
+<!--                        success: function (data) {-->
+<!--                            calendar.fullCalendar('refetchEvents');-->
+<!--                            alert("Added Successfully");-->
+<!--                        },-->
+<!--                        error: function (data) {-->
+<!--                            alert('There is a problem!!!');-->
+<!--                        }-->
+<!--                    });-->
+<!--                }-->
+<!--            },-->
+<!--            // ... Other event handlers and options as needed-->
+        });
+    });
+
+    </script>
+    <div class="col-md-12">
+        <div id='calendar'></div>
+    </div>
+</div>
+</body>
+</html>

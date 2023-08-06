@@ -1,0 +1,50 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title> TaskHub | Search </title>
+</head>
+
+{% include 'base.html' %}
+
+<br>
+<body>
+    <h3 class="text-center">Search results</h3>
+    <hr>
+    {% if tasks %}
+        <p style="margin-left: 10px;">Showing results for: <strong>{{ query }}</strong></p>
+        <ul>
+            {% for tsk in tasks %}
+            <div class="col-md-4">
+                <div class="card bg-secondary shadow-md" style="margin-top: 30px; border-radius: 10px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ tsk.title }}</h5>
+                        <br>
+                        <div class="description-container bg-white" style="padding: 25px; color: #343a40; border-radius: 10px">
+                            <p class="card-text">{{ tsk.content }}</p>
+                        </div>
+                        <br>
+                        <p><strong style="font-size: 15px">Due Date:</strong> {{ tsk.due_date }}</p>
+                        {% if tsk.tags.exists %}
+                        <div style="margin-top: 10px; padding: 2px 6px; font-size: 12px;">
+                            <strong style="display: inline-block; margin-bottom: 5px; font-size: 15px">Tags: &nbsp;</strong>
+                            {% for tag in tsk.tags.all %}
+                            <a href="#" style="display: inline-block; margin-right: 5px; margin-bottom: 5px; padding: 5px 10px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found for: <strong>{{ query }}</strong></p>
+    {% endif %}
+</body>
+</html>

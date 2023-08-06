@@ -1,0 +1,107 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>TaskHero | Tasks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .task-status-icon {
+            position: absolute;
+            top: 10px;
+            left: auto; /* Remove the left property */
+            right: 10px; /* Add the right property */
+            font-size: 20px;
+        }
+
+    </style>
+</head>
+
+{% include 'base.html' %}
+
+
+<div class="navbar-brand main-heading" style="margin-left: 10px; margin-top: 20px; color: white; font-size: 1.5em;">
+    <h3 class="text-center">My tasks:</h3>
+</div>
+
+<hr>
+<body>{% if messages %}
+  {% for message in messages %}
+    {% if message.tags == 'success' %}
+      <div class="text-center success" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; padding: 10px; margin-bottom: 10px; ">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+<div class="container">
+    <div class="row">
+{% for tsk in tasks %}
+
+        <div class="col-md-4">
+            <div class="card bg-secondary shadow-md" style="margin-top: 30px; border-radius: 10px;">
+              <div class="card-body">
+                    {% if tsk.status == 'todo' %}
+                        <i class="task-status-icon fas fa-exclamation-circle text-danger"></i>
+                    {% elif tsk.status == 'in_progress' %}
+                        <i class="task-status-icon fas fa-sync-alt text-warning" style="color: #999999;"></i>
+                    {% elif tsk.status == 'done' %}
+                        <i class="task-status-icon fas fa-check-circle text-success"></i>
+                    {% endif %}
+            <a href="{% url 'task-detail' tsk.id %}" style="font-size: 18px; text-decoration: none;">{{ tsk.title }}</a>
+                    <br>
+                                                <p class="card-text" style="font-size: 13px;"><strong>Assignee:</strong> {{ tsk.assignee }}</p>
+<br>
+                  <p>Description</p>
+                    <div class="description-container bg-white" style="padding: 25px; color: #343a40; border-radius: 5px">
+                        <p class="card-text">{{ tsk.content }}</p>
+                    </div>
+                    <br>
+                    <p><strong style="font-size: 15px">Due Date:</strong> {{ tsk.due_date }}</p>
+                    <p><strong style="font-size: 15px">Status:</strong>
+
+                      {% if tsk.status == 'todo' %}
+                        To Do
+                      {% elif tsk.status == 'in_progress' %}
+                        In Progress
+                      {% elif tsk.status == 'done' %}
+                        Done
+                      {% endif %}
+                    </p>
+                    {% if tsk.tags.exists %}
+                    <div style="margin-top: 10px; padding: 2px 6px;
+            font-size: 12px;">
+                        <strong style="display: inline-block; margin-bottom: 5px; font-size: 15px">Tags: &nbsp;</strong>
+                        {% for tag in tsk.tags.all %}
+                        <a href="#" style="display: inline-block; margin-right: 5px; margin-bottom: 5px; padding: 5px 10px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                        {% endif %}
+
+                    <br>
+                    <a href="{% url 'update-task' tsk.id %}" class="btn btn-info" style="border-radius: 10px;">Update task</a>
+                    <a href="{% url 'delete-task' tsk.id %}" class="btn btn-info" style="border-radius: 10px;">Delete task</a>
+                </div>
+            </div>
+        </div>
+                            {% empty %}
+                        <p>No tasks to do.</p>
+        {% endfor %}
+    </div>
+</div>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Set a timeout function to hide the success message after 5 seconds
+    setTimeout(function() {
+      $('.success').fadeOut('slow');
+    }, 5000); // 5000 milliseconds = 5 seconds
+  });
+</script>
+</body>
+
+</html>
