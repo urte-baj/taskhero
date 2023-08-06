@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
+
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+        <title> TaskHero </title>
+
+    </head>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+
+        <a class="navbar-brand main-heading" href="{% url 'index' %}" style="margin-left: 10px; color: white; font-size: 1.5em;">
+
+          &nbsp; TaskHero
+
+        </a>
+
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+          <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+
+
+            <ul class="navbar-nav ms-auto">
+
+
+              &nbsp;     &nbsp;     &nbsp;
+
+
+              <li class="nav-item">
+
+                <a class="btn btn-primary navbar-btn"  type="button" href="{% url 'register' %}">Register</a>
+
+              </li>
+
+
+              &nbsp;     &nbsp;     &nbsp;
+
+
+              <li class="nav-item">
+
+                <a class="btn btn-primary navbar-btn" type="button" href="{% url 'login' %}" style="margin-right: 10px;">Login</a>
+
+              </li>
+
+
+
+
+
+            </ul>
+
+
+          </div>
+
+
+    </nav>
+
+    <br>
+
+
+    <body>
+
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags == 'success' %}
+      <div class="text-center success" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; padding: 10px; margin-bottom: 10px; ">
+        {{ message }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+        <br>
+        <br>
+
+        <div class="text-center">
+
+        <h3> TaskHero: Your Reliable Sidekick in the Epic Battle Against Never-Ending Tasks! </h3>
+
+          <br>
+
+        <div class="container bg-white shadow-md p-5" style="border-radius: 10px; width: 500px; display: flex; justify-content: center; align-items: center;">
+            <img src="{% static 'media/cat_photo.png' %}" alt="Cat hero" style="max-width: 100%; max-height: 100%;">
+
+        </div>
+
+            <br>
+
+          <a class="btn btn-outline-primary" type="button" href="{% url 'register' %}">Get Started!</a>
+
+
+        </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Set a timeout function to hide the success message after 5 seconds
+    setTimeout(function() {
+      $('.success').fadeOut('slow');
+    }, 5000); // 5000 milliseconds = 5 seconds
+  });
+</script>
+
+	</body>
+
+
+
+    <br>
+
+    <script src="{% static 'js/app.js' %}"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
+
+
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+
+    crossorigin="anonymous">
+
+    </script>
+
+
+
+</html>

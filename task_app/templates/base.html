@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
+
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+        <style>
+
+            .profile-picture {
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          margin-right: 10px;
+        }
+        </style>
+
+        <title> TaskHero </title>
+
+    </head>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+
+        <a class="navbar-brand main-heading" href="{% url 'dashboard' %}" style="margin-left: 10px; color: white; font-size: 1.5em;">
+
+          &nbsp; TaskHero &nbsp;
+              <img class="profile-picture" src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
+
+        </a>
+
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+          <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+
+
+            <ul class="navbar-nav ms-auto">
+
+
+
+
+              <li class="nav-item">
+
+                <a class="btn btn-info navbar-btn"  type="button" href="{% url 'dashboard' %}" style="margin-right: 10px;">Dashboard</a>
+
+              </li>
+
+
+              <li class="nav-item">
+
+                <a class="btn btn-info navbar-btn" type="button" href="{% url 'view-tasks' %}" style="margin-right: 10px;">My tasks</a>
+
+              </li>
+
+              <li class="nav-item">
+
+                <a class="btn btn-info navbar-btn" type="button" href="{% url 'create-task' %}" style="margin-right: 10px;">Create task</a>
+
+              </li>
+
+            <li class="nav-item">
+
+                <a class="btn btn-info navbar-btn" type="button" href="{% url 'calendar' %}" style="margin-right: 10px;">Calendar</a>
+
+              </li>
+
+                              <li class="nav-item">
+
+                <a class="btn btn-secondary navbar-btn" type="button" href="{% url 'profile' %}" style="margin-right: 10px;">Profile</a>
+
+              </li>
+
+              <li class="nav-item">
+
+                        <li class="nav-item">
+
+
+                <a class="btn btn-secondary navbar-btn" type="button" href="{% url 'user-logout' %}" style="margin-right: 10px;">Log Out</a>
+
+              </li>
+
+              <li class="nav-item ml-auto">
+    <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="GET">
+        <div class="input-group">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query" style="margin-right: 10px;">
+<!--            <div class="input-group-append">-->
+<!--                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>-->
+<!--            </div>-->
+        </div>
+    </form>
+</li>
+
+
+            </ul>
+
+
+          </div>
+
+
+    </nav>
+
+
+</html>

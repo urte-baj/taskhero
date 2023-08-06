@@ -1,0 +1,10 @@
+.car-photo {
+    width: 400px;
+    height: 300px;
+    object-fit: contain;
+}
+
+.box {
+    inline-size: 400px;
+    overflow-wrap: break-word;
+}

@@ -1,0 +1,66 @@
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+        <title> TaskHub | Register </title>
+
+    </head>
+
+{% include 'pre-base.html' %}
+
+
+<br>
+
+<div class="container bg-secondary shadow-md p-5 form layout" style="border-radius: 10px; width: 500px">
+
+    <h3>Registration</h3><br/>
+
+    <form method="post" autocomplete="off">
+
+    {% csrf_token %}
+
+    {{ form.first_name|as_crispy_field }}
+
+    <br>
+
+    {{ form.last_name|as_crispy_field }}
+
+    <br>
+
+    {{ form.username|as_crispy_field }}
+
+    <br>
+
+    {{ form.email|as_crispy_field }}
+
+    <br>
+
+    {{ form.password1|as_crispy_field }}
+
+    <br>
+
+    {{ form.password2|as_crispy_field }}
+
+    <br>
+
+    <input type="submit" class="btn btn-primary" value="Submit" />
+    <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+
+    <p>If you are already registered, log in <a href="{% url 'login' %}"><strong> here.</strong></a></p>
+</div>
+
+</html>
+

@@ -1,0 +1,205 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>TaskHero | Dashboard </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .task-status-icon {
+            position: absolute;
+            top: 10px;
+            left: auto; /* Remove the left property */
+            right: 10px; /* Add the right property */
+            font-size: 20px;
+        }
+
+        .bold-hr {
+          border-top: 5px solid #000;
+        }
+
+    </style>
+</head>
+
+{% include 'base.html' %}
+<br><br>
+
+<div class="container" style="padding: 100 px, margin-left: 5px;">
+    <h2>Most recent comments:</h2>
+    {% for comment in comments %}
+    <div class="card bg-white shadow-md"
+         style="margin-top: 30px; border-radius: 10px;width: 600px; padding: 10 px; border: 2px solid black;">
+        <div class="d-flex align-items-center">
+            <img src="{{ comment.user.profile.profile_picture.url }}" class="rounded-circle"
+                 style="width: 40px; height: 40px; margin-left: 10px; margin-top: 5px;">
+            <p style="margin-left: 10px; margin-top: 5px; font-weight: bold; font-size: 18px; color: black"> {{ comment.user.username }}</p>
+        </div>
+        <br>
+        <a href="{% url 'task-detail' comment.task.id %}"
+           style="text-decoration: none; color: black; margin-left: 15px;">
+
+            <p style="margin-left: 15px; color: black;">{{ comment.text | safe }}</p>
+        </a>
+        <p style="margin-left: 10px; color: black;">Posted on: {{ comment.posted_date }}</p>
+    </div>
+    {% empty %}
+    <p>No recent comments.</p>
+    {% endfor %}
+</div>
+
+
+<div class="navbar-brand main-heading" style="margin-left: 10px; margin-top: 20px; color: white; font-size: 1.5em;">
+    <h3 class="text-center">Tasks:</h3>
+</div>
+
+<hr>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card bg-secondary shadow-md" style="margin-top: 30px; border-radius: 10px;">
+                <div class="card-body">
+
+                    <h5 class="card-title" style="color:#E74C3C;">To Do</h5>
+                    <hr class="bold-hr">
+                    <div class="row">
+                        {% for tsk in tasks.todo%}
+                        <div class="task-card">
+                            {% if tsk.status == 'todo' %}
+                            <i class="task-status-icon fas fa-exclamation-circle text-danger"></i>
+                            {% elif tsk.status == 'in_progress' %}
+                            <i class="task-status-icon fas fa-sync-alt text-warning" style="color: #999999;"></i>
+                            {% elif tsk.status == 'done' %}
+                            <i class="task-status-icon fas fa-check-circle text-success"></i>
+                            {% endif %}
+                            <a href="{% url 'task-detail' tsk.id %}" style="font-size: 18px; text-decoration: none;">{{ tsk.title }}</a>
+                            <br><br>
+                            <p class="card-text" style="font-size: 13px;"><strong>Assignee:</strong> {{ tsk.assignee }}
+                            </p>
+
+                            <p class="card-text" style="font-size: 13px;"><strong>Due Date:</strong> {{ tsk.due_date }}
+                            </p>
+                            {% if tsk.tags.exists %}
+                            <div style="margin-top: 10px;">
+                                <strong style="display: inline-block; margin-bottom: 5px; font-size: 15px">Tags:
+                                    &nbsp;</strong>
+                            {% for tag in tsk.tags.all %}
+                            <p
+                               style="display: inline-block; margin-right: 5px; margin-bottom: 5px; padding: 5px 10px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% if tsk.assignee == request.user %}
+                        <a href="{% url 'update-task' tsk.id %}" class="btn btn-info" style="border-radius: 10px;">Update
+                            task</a>
+                        <a href="{% url 'delete-task' tsk.id %}" class="btn btn-info" style="border-radius: 10px;">Delete
+                            task</a>
+                        {% endif %}
+                    </div>
+                    <hr>
+                        {% empty %}
+                        <p>No tasks to do.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-secondary shadow-md" style="margin-top: 30px; border-radius: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color:#F8C471;">In Progress</h5>
+                    <hr class="bold-hr">
+                    {% for tsk in tasks.in_progress %}
+                    <div class="task-card">
+                        {% if tsk.status == 'todo' %}
+                        <i class="task-status-icon fas fa-exclamation-circle text-danger"></i>
+                        {% elif tsk.status == 'in_progress' %}
+                        <i class="task-status-icon fas fa-sync-alt text-warning" style="color: #999999;"></i>
+                        {% elif tsk.status == 'done' %}
+                        <i class="task-status-icon fas fa-check-circle text-success"></i>
+                        {% endif %}
+                        <a href="{% url 'task-detail' tsk.id %}" style="font-size: 18px; text-decoration: none;">{{ tsk.title }}</a>
+                        <br><br>
+                        <p class="card-text" style="font-size: 13px;"><strong>Assignee:</strong> {{ tsk.assignee }}</p>
+
+                        <p class="card-text" style="font-size: 13px;"><strong>Due Date:</strong> {{ tsk.due_date }}</p>
+                        {% if tsk.tags.exists %}
+                        <div style="margin-top: 10px;">
+                            <strong style="display: inline-block; margin-bottom: 5px; font-size: 15px">Tags:
+                                &nbsp;</strong>
+                            {% for tag in tsk.tags.all %}
+                            <p
+                               style="display: inline-block; margin-right: 5px; margin-bottom: 5px; padding: 5px 10px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">{{ tag.name }}</a>
+                            {% endfor %}
+                        </div>
+                        <br>
+                        {% endif %}
+                        {% if tsk.assignee == request.user %}
+                        <a href="{% url 'update-task' tsk.id %}" class="btn btn-info" style="border-radius: 10px;">Update
+                            task</a>
+                        <a href="{% url 'delete-task' tsk.id %}" class="btn btn-info" style="border-radius: 10px;">Delete
+                            task</a>
+                        {% endif %}
+                    </div>
+
+                    <hr>
+                    {% empty %}
+                    <p>No tasks in progress.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-secondary shadow-md" style="margin-top: 30px; border-radius: 10px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #82E0AA;">Done</h5>
+                    <hr class="bold-hr">
+                    {% for tsk in tasks.done %}
+                    <div class="task-card">
+                        {% if tsk.status == 'todo' %}
+                        <i class="task-status-icon fas fa-exclamation-circle text-danger"></i>
+                        {% elif tsk.status == 'in_progress' %}
+                        <i class="task-status-icon fas fa-sync-alt text-warning" style="color: #999999;"></i>
+                        {% elif tsk.status == 'done' %}
+                        <i class="task-status-icon fas fa-check-circle text-success"></i>
+                        {% endif %}
+                        <a href="{% url 'task-detail' tsk.id %}" style="font-size: 18px; text-decoration: none;">{{ tsk.title }}</a>
+                        <br><br>
+                        <p class="card-text" style="font-size: 13px;"><strong>Assignee:</strong> {{ tsk.assignee }}</p>
+
+                        <p class="card-text" style="font-size: 13px;"><strong>Due Date:</strong> {{ tsk.due_date }}</p>
+                        {% if tsk.tags.exists %}
+                        <div style="margin-top: 10px;">
+                            <strong style="display: inline-block; margin-bottom: 5px; font-size: 15px">Tags:
+                                &nbsp;</strong>
+                            {% for tag in tsk.tags.all %}
+                            <p
+                               style="display: inline-block; margin-right: 5px; margin-bottom: 5px; padding: 5px 10px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">{{ tag.name }}</p>
+                            {% endfor %}
+                        </div>
+
+                        {% endif %}
+                        <br>
+                        {% if tsk.assignee == request.user %}
+                        <a href="{% url 'update-task' tsk.id %}" class="btn btn-info" style="border-radius: 10px;">Update
+                            task</a>
+                        <a href="{% url 'delete-task' tsk.id %}" class="btn btn-info" style="border-radius: 10px;">Delete
+                            task</a>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    {% empty %}
+                    <p>No tasks done.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

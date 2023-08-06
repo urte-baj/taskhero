@@ -1,0 +1,115 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>TaskHero | Task details </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .task-status-icon {
+            position: absolute;
+            top: 10px;
+            left: auto; /* Remove the left property */
+            right: 10px; /* Add the right property */
+            font-size: 20px;
+        }
+
+      .custom-input {
+        margin-left: 20px;
+        background-color: white;
+        /* Add any other desired styles */
+      }
+
+
+
+
+    </style>
+</head>
+
+{% include 'base.html' %}
+
+<!--<div class="navbar-brand main-heading" style="margin-left: 10px; margin-top: 20px; color: white; font-size: 1.5em;">-->
+<!--    <h3 class="text-center">My tasks:</h3>-->
+<!--</div>-->
+
+<hr>
+
+<div class="container bg-secondary shadow-md p-5" style="border-radius: 10px; width: 1000 px;">
+
+    <!--                    {% if task.status == 'todo' %}-->
+    <!--                        <i class="task-status-icon fas fa-exclamation-circle text-danger"></i>-->
+    <!--                    {% elif task.status == 'in_progress' %}-->
+    <!--                        <i class="task-status-icon fas fa-sync-alt text-warning" style="color: #999999;"></i>-->
+    <!--                    {% elif task.status == 'done' %}-->
+    <!--                        <i class="task-status-icon fas fa-check-circle text-success"></i>-->
+    <!--                    {% endif %}-->
+    <h5 class="card-title">{{ task.title }}</h5>
+    <br>
+    <p>Description</p>
+    <div class="description-container bg-white" style="padding: 25px; color: #343a40; border-radius: 5px">
+        <p class="card-text">{{ task.content }}</p>
+    </div>
+    <br>
+    <p><strong style="font-size: 15px">Due Date:</strong> {{ task.due_date }}</p>
+    <p><strong style="font-size: 15px">Status:</strong>
+                      {% if task.status == 'todo' %}
+                        To Do
+                      {% elif task.status == 'in_progress' %}
+                        In Progress
+                      {% elif task.status == 'done' %}
+                        Done
+                      {% endif %}
+    </p>
+    {% if task.tags.exists %}
+    <div style="margin-top: 10px; padding: 2px 6px; font-size: 12px;">
+        <strong style="display: inline-block; margin-bottom: 5px; font-size: 15px">Tags: &nbsp;</strong>
+        {% for tag in task.tags.all %}
+        <p style="display: inline-block; margin-right: 5px; margin-bottom: 5px; padding: 5px 10px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;"> {{ tag.name }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <br>
+    {% if task.assignee == request.user %}
+    <a href="{% url 'update-task' task.id %}" class="btn btn-info" style="border-radius: 10px;">Update task</a>
+    <a href="{% url 'delete-task' task.id %}" class="btn btn-info" style="border-radius: 10px;">Delete task</a>
+    {% endif %}
+</div>
+<br><br>
+<h3 class="text-left" style="margin-left: 20px;">Comments:</h3>
+
+<hr>
+{% for comment in comments %}
+<div class="container bg-info shadow-md p-5" style="border-radius: 10px; width: 1000 px;">
+    <p>{{ comment.text |safe }}</p>
+    <small>Posted by {{ comment.user.username }} on {{ comment.posted_date }}</small>
+</div>
+<br>
+{% empty %}
+<p style="margin-left: 20px;">No comments yet.</p>
+{% endfor %}
+<br>
+
+<div class="container bg-info shadow-md p-5"
+     style="border-radius: 10px; width: 800 px; background-color: white; position: relative; bottom: 20px;">
+
+    <form method="post" action="{% url 'task-detail' pk=task.pk %}">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Post" style="margin-left: 20px;"/>
+        <input type="hidden" name="next" value="{{ next }}"/>
+    </form>
+</div>
+
+<!--&lt;!&ndash; Include CKEditor JavaScript &ndash;&gt;-->
+<!--<script src="{% static 'ckeditor/ckeditor.js' %}"></script>-->
+<!--<script>-->
+<!--   CKEDITOR.replace('id_text');-->
+<!--</script>-->
+
+</html>
