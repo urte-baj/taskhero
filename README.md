@@ -40,7 +40,7 @@ TaskHero is a project management tool that allows you to create, manage, and tra
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/taskhero.git
+git clone https://github.com/urte-baj/taskhero.git
 ```
 
 2. Install dependencies:
